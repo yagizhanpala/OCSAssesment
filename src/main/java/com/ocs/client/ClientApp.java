@@ -21,11 +21,11 @@ public class ClientApp {
 
 		try {
 			
-			// Scanner in = new Scanner(System.in);
+			Scanner in = new Scanner(System.in);
 
 			System.out.println("Please input file direction ");
 
-			String s = "C:\\1.json"; // in.nextLine();
+			String s = in.nextLine();
 			
 			var parser = new JSONParser();
 			var jsonObj = (JSONObject)parser.parse(new FileReader(s));
