@@ -1,2 +1,0 @@
-# OCSAssesment
-OCS Assessment project
