@@ -3,16 +3,12 @@ package com.ocs.client;
 import java.io.FileReader;
 import java.util.Scanner;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import com.ocs.api.model.ResponseObject;
 
 public class ClientApp {
 
@@ -39,6 +35,7 @@ public class ClientApp {
 	        System.out.println(response);
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception thrown. Please verify your input.");
 		}
 	}
