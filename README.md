@@ -36,7 +36,7 @@ embedded tomcat should be up and displayed message: Server listening on localhos
 
 The project will need "8080" port.
 Available endpoint to test Restful service will be: http://localhost:8080/OCSAssessment/rest/sendInstructions
-This api will accept JSON file in format shared with backend project assessment guideline.
+This api will accept JSON in format shared in backend project assessment guideline word document.
 
 Example of POSTMAN:
 
