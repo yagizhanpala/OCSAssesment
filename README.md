@@ -1,5 +1,5 @@
 # OCSAssessment
-OCS Assessment project
+OCS Assessment -Backend- project
 
 Project is coded with Java (JRE: JavaSE 17) in Maven, with JUnit test framework. It consist of a Client and RESTful application triggered separetly by input provided from Console by client. Restful service is implemented with Jersey framework to launch rest service. Besides Tomcat is embedded in project and it leverage inside the solution to be able to run itself without needing any server to host. 
 
@@ -33,3 +33,12 @@ REMARQUE: The requirement below is considered typo while changing the directions
 embedded tomcat should be up and displayed message: Server listening on localhost:8080
 
 ![image](https://user-images.githubusercontent.com/1770848/219591989-e3adad47-16d5-40c5-bb0e-e5351688181b.png)
+
+The project will need "8080" port.
+Available endpoint to test Restful service will be: http://localhost:8080/OCSAssessment/rest/sendInstructions
+This api will accept JSON file in format shared with backend project assessment guideline.
+
+Example of POSTMAN:
+
+![image](https://user-images.githubusercontent.com/1770848/219597552-620a4ef2-aa66-4c41-a5d7-36b1ab02ede7.png)
+
