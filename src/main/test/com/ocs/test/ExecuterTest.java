@@ -7,13 +7,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.ocs.api.RestResource;
 import com.ocs.api.model.PayloadObject;
 import com.ocs.api.model.ResponseObject;
 import com.ocs.model.Location;
 import com.ocs.model.Position;
+import com.ocs.opr.Executer;
 
-class RestResourceTest {
+class ExecuterTest {
 
 	@Test
 	void testExecuteCommands() {
@@ -38,7 +38,7 @@ class RestResourceTest {
 			}
 		};
 
-		List<Location> visitedCells = new ArrayList<Location>(){
+		List<Location> visitedCells = new ArrayList<Location>() {
 			{
 				add(new Location(0, 0));
 				add(new Location(1, 0));
@@ -72,12 +72,11 @@ class RestResourceTest {
 			}
 		};
 
-		var rr = new RestResource();
+		var executer = new Executer();
 
-		var response = rr.executeCommands(jsonObj);
-
-		ResponseObject t2 = expectedResponse; 
-		System.out.println(response.getBattery());
+		var response = executer.run(jsonObj);
+		
 		assertEquals(expectedResponse.getSamplesCollected(), response.getSamplesCollected());
+		assertEquals(expectedResponse.getBattery(), response.getBattery());
 	}
-}	
+}

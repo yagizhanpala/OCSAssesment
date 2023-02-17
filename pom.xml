@@ -19,7 +19,7 @@
 				</executions>
 				<configuration>
 					<classifier>exec</classifier>
-					<mainClass>com.ocs.client.ClientApp</mainClass>
+					<mainClass>com.ocs.app.Application</mainClass>
 					<executable>true</executable>
 				</configuration>
 			</plugin>
@@ -92,5 +92,23 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>2.3.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-logging-juli</artifactId>
+            <version>9.0.0.M6</version>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
 	</dependencies>
+	<properties>
+		<tomcat.version>9.0.58</tomcat.version>
+	</properties>
 </project>

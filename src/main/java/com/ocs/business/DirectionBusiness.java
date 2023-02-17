@@ -12,10 +12,10 @@ public class DirectionBusiness {
 	 * REQUIREMENT:
 	 *	•	Turn Left (L):  
 	 *		o	Consumes 2 battery units. 
-	 *		o	Changes the facing direction 90º to the right. 
+	 *		o	Changes the facing direction 90º to the right. ??? -> assumed typo
 	 *	•	Turn Right (R): 
 	 *		o	Consumes 2 battery units. 
-	 *		o	Changes the facing direction 90º to the left. 
+	 *		o	Changes the facing direction 90º to the left. ??? -> assumed typo
 	 *
 	 */
 	public String calculateNewDirection(String facing, String newDirection) {
