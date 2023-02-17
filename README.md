@@ -1,14 +1,9 @@
 # OCSAssessment
 OCS Assessment project
 
-Project code base is in "master" branch
-Project is coded with Java in Maven
-It consist of a Client and RESTful application triggered separetly by input provided from Console by client.
-Jersey framework is implemented as RESTful framework to launch rest service
-To be able to run itself Tomcat is embedded in project and it leverage inside the solution.
+Project is coded with Java (JRE: JavaSE 17) in Maven, with JUnit test framework. It consist of a Client and RESTful application triggered separetly by input provided from Console by client. Restful service is implemented with Jersey framework to launch rest service. Besides Tomcat is embedded in project and it leverage inside the solution to be able to run itself without needing any server to host. 
 
-
-The requirement below is considered typo while changing the directions
+REMARQUE: The requirement below is considered typo while changing the directions
 
 •	Turn Left (L):
   Consumes 2 battery units. 
