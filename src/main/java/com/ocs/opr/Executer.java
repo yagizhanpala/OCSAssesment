@@ -13,16 +13,8 @@ public class Executer {
 		var myTerrain = new Terrain(input.getTerrain());
 		var myRobot = new Robot(input);
 		var rb = new RobotBusiness(myRobot, myTerrain);
-		var response = new ResponseObject();
 
-		try {
-			response = rb.executeCommands(input.getCommands());
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-
-		return response;
-
+		return rb.executeCommands(input.getCommands());
 	}
 
 }

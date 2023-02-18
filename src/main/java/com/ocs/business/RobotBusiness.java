@@ -29,9 +29,7 @@ public class RobotBusiness {
 
 		visitedCells = new ArrayList<Location>() {
 			{
-				// Because Location will keep being updated need to assign it to another object
-				var location = new Location(robot.getLocation().getX(), robot.getLocation().getY());
-				add(location);
+				add(createLocationObject());
 			}
 		};
 	}
@@ -102,31 +100,32 @@ public class RobotBusiness {
 
 		do {
 			var commands = stepBackCommands.get(i).split(",");
-			location1 = new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
+			location1 = createLocationObject();
 			itirateCommands(commands);
-			location2 = new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
+			location2 = createLocationObject();
 			i++;
 
-		} while ((location1.getX() == location2.getX()) && (location1.getY() == location2.getY())
-				&& i < stepBackCommands.size());
+		} while (compareTwoLocations(location1, location2) && i < stepBackCommands.size());
 
 		this.isStepBackExecution = false;
 	}
 
+	private boolean compareTwoLocations(Location location1, Location location2) {
+		return location1.getX() == location2.getX() && location1.getY() == location2.getY();
+	}
+
 	private void registerMovement(int[] coord) {
 		myRobot.setLocation(lb.setNewLocation(coord));
-		var location = setVisitedLocations();
-		addVisitedLocations(location);
+		addVisitedLocations(createLocationObject());
 	}
 
 	private void updateBattery(String command, boolean isNextCoordAnObs) {
 		if (!isNextCoordAnObs) {
 			myRobot.setBattery(bb.consumeBattery(command, myRobot.getBattery()));
-
 		}
 	}
 
-	private boolean isCoordinateAnObs(int x, int y) {
+	private boolean isCoordinateAnObs(int x, int y) throws ArrayIndexOutOfBoundsException {
 		return tb.getTerrain(x, y).equals("Obs");
 	}
 
@@ -151,19 +150,14 @@ public class RobotBusiness {
 		}
 	}
 
-	private Location setVisitedLocations() {
-
-		Location loc = new Location();
-		loc.setX(myRobot.getLocation().getX());
-		loc.setY(myRobot.getLocation().getY());
-
-		return loc;
-
+	/*
+	 * new Location object is created using Robot Object's current coordinates.
+	 */
+	private Location createLocationObject() {
+		return new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
 	}
 
 	private boolean canBeAdded(Location location) {
-
 		return !visitedCells.contains(location);
-
 	}
 }
