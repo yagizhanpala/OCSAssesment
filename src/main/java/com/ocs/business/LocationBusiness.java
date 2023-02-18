@@ -7,21 +7,21 @@ import com.ocs.model.Location;
 public class LocationBusiness {
 
 	Location location;
-	
-	public LocationBusiness(Location l) {
-		this.location = l;
+
+	public LocationBusiness(Location location) {
+		this.location = location;
 	}
-	
+
 	private Map<String, int[]> movement = Map.of(
-			"East", new int[] { 1, 0 }, 
-			"West", new int[] { -1, 0 }, 
-			"North", new int[] { 0, -1 }, 
+			"East", new int[] { 1, 0 },
+			"West", new int[] { -1, 0 },
+			"North", new int[] { 0, -1 },
 			"South", new int[] { 0, 1 });
 
-	public Location setNewPosition(int[] nextCoordinate) {
+	public Location setNewLocation(int[] coordinate) {
 
-		location.setX(nextCoordinate[0]);
-		location.setY(nextCoordinate[1]);
+		location.setX(coordinate[0]);
+		location.setY(coordinate[1]);
 
 		return location;
 	}
@@ -32,18 +32,28 @@ public class LocationBusiness {
 		return movement.get(facing);
 	}
 
-	public int[] checkForwardPosition(String facing) {
+	/*
+	 * to be called when command F or B to see which position taken when command is
+	 * executed
+	 * arguments: arg -> String command, String facing
+	 */
+	public int[] calculateNextCoordinate(String... arg) {
 
-		
-		int[] lengths = getHowLongToAdvance(facing);
+		int[] lengths = getHowLongToAdvance(arg[1]);
 
-		int[] newPosition = new int[2];
-		newPosition[0] = lengths[0] + location.getX();
-		newPosition[1] = lengths[1] + location.getY();
-		
-		return newPosition;
+		int[] coordinate = new int[2];
+
+		if (arg[0].equals("F")) {
+			coordinate[0] = location.getX() + lengths[0];
+			coordinate[1] = location.getY() + lengths[1];
+		} else if (arg[0].equals("B")) {
+			coordinate[0] = location.getX() - lengths[0];
+			coordinate[1] = location.getY() - lengths[1];
+		}
+
+		return coordinate;
 	}
-	
+
 	public Location moveBack(String facing) {
 
 		int[] lengths = getHowLongToAdvance(facing);

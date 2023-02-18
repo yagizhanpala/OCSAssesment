@@ -7,7 +7,7 @@ import com.ocs.model.Robot;
 import com.ocs.model.Terrain;
 
 public class Executer {
-	
+
 	public ResponseObject run(PayloadObject input) {
 
 		var myTerrain = new Terrain(input.getTerrain());
@@ -16,7 +16,7 @@ public class Executer {
 		var response = new ResponseObject();
 
 		try {
-			response = rb.executeCommands(input.getCommands(), false);
+			response = rb.executeCommands(input.getCommands());
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new ArrayIndexOutOfBoundsException();
 		}

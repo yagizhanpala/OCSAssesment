@@ -13,93 +13,118 @@ public class RobotBusiness {
 
 	Robot myRobot;
 	Terrain myTerrain;
-
 	LocationBusiness lb;
+	TerrainBusiness tb;
+	List<Location> visitedCells;
 	DirectionBusiness db = new DirectionBusiness();
 	BatteryBusiness bb = new BatteryBusiness();
-	TerrainBusiness tb;
 	List<String> samples = new ArrayList<String>();
-	List<Location> visitedCells = new ArrayList<Location>();
+	private boolean isStepBackExecution = false;
 
-	public RobotBusiness(Robot r, Terrain t) {
-		this.myRobot = r;
-		this.myTerrain = t;
-	}
-
-	public ResponseObject executeCommands(String[] commands, boolean stepBackExecution) {
-
+	public RobotBusiness(Robot robot, Terrain terrain) {
+		this.myRobot = robot;
+		this.myTerrain = terrain;
 		lb = new LocationBusiness(myRobot.getLocation());
 		tb = new TerrainBusiness(myTerrain.getTerrain());
-		
-		if (!stepBackExecution) {
-			visitedCells.add(setVisitedLocations());
-		}
+
+		visitedCells = new ArrayList<Location>() {
+			{
+				// Because Location will keep being updated need to assign it to another object
+				var location = new Location(robot.getLocation().getX(), robot.getLocation().getY());
+				add(location);
+			}
+		};
+	}
+
+	public ResponseObject executeCommands(String[] commands) {
+
+		itirateCommands(commands);
+		var responseObject = mapResponseObject();
+		return responseObject;
+	}
+
+	private void itirateCommands(String[] commands) {
 
 		for (String c : commands) {
 
+			boolean isNextCoordAnObs = false;
+
 			switch (c) {
-			case "F":
-				checkFCondition(stepBackExecution);
-				break;
-			case "B":
-				myRobot.setLocation(lb.moveBack(myRobot.getFacing()));
-				break;
-			case "R":
-				myRobot.setFacing(db.calculateNewDirection(myRobot.getFacing(), c));
-				break;
-			case "L":
-				myRobot.setFacing(db.calculateNewDirection(myRobot.getFacing(), c));
-				break;
-			case "S":
-				samples = tb.addSample(samples, myRobot.getLocation());
-				break;
-			case "E":
-				myRobot.setBattery(bb.chargeBattery(c, myRobot.getBattery()));
-				break;
-
+				case "F":
+					isNextCoordAnObs = examineMovement(c);
+					break;
+				case "B":
+					isNextCoordAnObs = examineMovement(c);
+					break;
+				case "R":
+					myRobot.setFacing(db.calculateNewDirection(myRobot.getFacing(), c));
+					break;
+				case "L":
+					myRobot.setFacing(db.calculateNewDirection(myRobot.getFacing(), c));
+					break;
+				case "S":
+					samples = tb.addSample(samples, myRobot.getLocation());
+					break;
+				case "E":
+					myRobot.setBattery(bb.chargeBattery(c, myRobot.getBattery()));
+					break;
 			}
-			myRobot.setBattery(bb.consumeBattery(c, myRobot.getBattery()));
+			updateBattery(c, isNextCoordAnObs);
 		}
-
-		return mapResponseObject();
 	}
 
-	private void checkFCondition(boolean stepBackExecution) {
+	private boolean examineMovement(String command) {
 
-		var nextPosition = lb.checkForwardPosition(myRobot.getFacing());
+		var coord = lb.calculateNextCoordinate(command, myRobot.getFacing());
 
-		// lets check first next planned move if it is an OK area to move
-		if (!isItAnObs(nextPosition[0], nextPosition[1])) {
-			// as there is no obstacle, lets move to this position
-			myRobot.setLocation(lb.setNewPosition(nextPosition));
-			Location l = setVisitedLocations();
-			addVisitedLocations(l);
-		} else if (!stepBackExecution) {
+		var isNextCoordAnObs = isCoordinateAnObs(coord[0], coord[1]);
+
+		// check if next coordinate is a location safe to move
+		if (!isNextCoordAnObs) {
+			registerMovement(coord);
+		} else if (!this.isStepBackExecution) {
 			// since there is an obstacle, lets review step back movements
 			// this stage shouldn't be executed when it is already in step back process
 			stepBack();
 		}
+
+		return isNextCoordAnObs;
 	}
 
 	private void stepBack() {
 
+		this.isStepBackExecution = true;
 		List<String> stepBackCommands = List.of("E,R,F", "E,L,F", "E,L,L,F", "E,B,R,F", "E,B,B,L,F", "E,F,F",
 				"E,F,L,F,L,F");
 
-		Location newLocation;
+		Location myLocation;
 		int i = 0;
 
 		do {
 			var commands = stepBackCommands.get(i).split(",");
-			executeCommands(commands, true);
-			newLocation = myRobot.getLocation();
+			itirateCommands(commands);
+			myLocation = myRobot.getLocation();
 			i++;
 
-		} while (isItAnObs(newLocation.getX(), newLocation.getY()));
+		} while (isCoordinateAnObs(myLocation.getX(), myLocation.getY()));
 
+		this.isStepBackExecution = false;
 	}
 
-	private boolean isItAnObs(int x, int y) {
+	private void registerMovement(int[] coord) {
+		myRobot.setLocation(lb.setNewLocation(coord));
+		var location = setVisitedLocations();
+		addVisitedLocations(location);
+	}
+
+	private void updateBattery(String command, boolean isNextCoordAnObs) {
+		if (!isNextCoordAnObs) {
+			myRobot.setBattery(bb.consumeBattery(command, myRobot.getBattery()));
+
+		}
+	}
+
+	private boolean isCoordinateAnObs(int x, int y) {
 		return tb.getTerrain(x, y).equals("Obs");
 	}
 
