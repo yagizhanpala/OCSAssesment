@@ -97,16 +97,17 @@ public class RobotBusiness {
 		List<String> stepBackCommands = List.of("E,R,F", "E,L,F", "E,L,L,F", "E,B,R,F", "E,B,B,L,F", "E,F,F",
 				"E,F,L,F,L,F");
 
-		Location myLocation;
+		Location location1, location2;
 		int i = 0;
 
 		do {
 			var commands = stepBackCommands.get(i).split(",");
+			location1 = new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
 			itirateCommands(commands);
-			myLocation = myRobot.getLocation();
+			location2 = new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
 			i++;
 
-		} while (isCoordinateAnObs(myLocation.getX(), myLocation.getY()));
+		} while ((location1.getX() == location2.getX()) && (location1.getY() == location2.getY()) && i < 7);
 
 		this.isStepBackExecution = false;
 	}
