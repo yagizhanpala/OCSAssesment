@@ -107,7 +107,8 @@ public class RobotBusiness {
 			location2 = new Location(myRobot.getLocation().getX(), myRobot.getLocation().getY());
 			i++;
 
-		} while ((location1.getX() == location2.getX()) && (location1.getY() == location2.getY()) && i < 7);
+		} while ((location1.getX() == location2.getX()) && (location1.getY() == location2.getY())
+				&& i < stepBackCommands.size());
 
 		this.isStepBackExecution = false;
 	}
