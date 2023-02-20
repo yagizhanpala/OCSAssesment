@@ -10,7 +10,7 @@ public class Messages {
 	public static final String ioError = "An error occured while input/output execution.";
 	public static final String serverListening = "Server listening on ";
 	public static final String helloWorld = "Hello World";
-	public static final String outOfBounds = "Execution is interrupted: Robot wants to move out the terrain";
+	public static final String outOfBounds = "Execution is interrupted: Robot wants to move out of the terrain";
 	
 
 }

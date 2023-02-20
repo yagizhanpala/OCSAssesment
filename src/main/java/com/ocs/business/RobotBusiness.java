@@ -75,6 +75,10 @@ public class RobotBusiness {
 
 		var coord = lb.calculateNextCoordinate(command, myRobot.getFacing());
 
+		if (!isNextMoveValid(coord)) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+
 		var isNextCoordAnObs = isCoordinateAnObs(coord[0], coord[1]);
 
 		// check if next coordinate is a location safe to move
@@ -159,5 +163,9 @@ public class RobotBusiness {
 
 	private boolean canBeAdded(Location location) {
 		return !visitedCells.contains(location);
+	}
+	
+	private boolean isNextMoveValid(int[] coord) {
+		return coord[0] >= 0 && coord[0] < myRobot.getTerrain()[0].length && coord[1] >= 0 && coord[1] < myRobot.getTerrain().length;
 	}
 }

@@ -16,7 +16,7 @@ import com.ocs.conf.Config;
 import com.ocs.conf.Messages;
 
 public class Launcher {
-	
+
 	private final String pattern = "/OCSAssessment/rest/*";
 	private final String servletName = "jersey-container-servlet";
 
@@ -42,14 +42,16 @@ public class Launcher {
 
 			System.out.println(Messages.executionOver + outputFile);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e) {
+			throw new ArrayIndexOutOfBoundsException();
+		}catch (Exception e) {
+			throw new RuntimeException();
 		}
 
 	}
-	
-	private void tomcatLauncher() throws LifecycleException{
-		
+
+	private void tomcatLauncher() throws LifecycleException {
+
 		Tomcat tomcat = new Tomcat();
 
 		int port = Integer.getInteger("PORT", Integer.parseInt(Config.PORT.label));
@@ -62,7 +64,8 @@ public class Launcher {
 		context.addServletMappingDecoded(pattern, servletName);
 		tomcat.start();
 
-		System.out.println(Messages.serverListening + tomcat.getHost().getName() + ":" + tomcat.getConnector().getPort());
+		System.out
+				.println(Messages.serverListening + tomcat.getHost().getName() + ":" + tomcat.getConnector().getPort());
 
 		tomcat.getServer().await();
 	}
